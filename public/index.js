@@ -14,9 +14,9 @@ function getImageData() {
 }
 
 function processImage(imageFile) {
-    var reader = new FileReader();
+    let reader = new FileReader();
     reader.onload = function () {
-        var dataURL = reader.result;
+        let dataURL = reader.result;
         const base64Image = dataURL.replace(
             /^data:image\/(png|jpg|jpeg);base64,/, ""
         );
@@ -32,12 +32,12 @@ function processImage(imageFile) {
 }
 
 function detectImage(base64Image) {
-    var myHeaders = new Headers();
+    let myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
-    var raw = JSON.stringify({ data: base64Image });
+    let raw = JSON.stringify({ data: base64Image });
 
-    var requestOptions = {
+    let requestOptions = {
         method: "POST",
         body: raw,
         redirect: "follow",
@@ -46,17 +46,17 @@ function detectImage(base64Image) {
 
     fetch("/rekognize/image", requestOptions)
         .then((response) => response.json())
-        .then((result) => displayResults(result.Labels, "image", false))
+        .then((result) => displayResults(result.Labels || [], "image", false))
         .catch((error) => displayResults(error, "image", true));
 }
 
 function detectFacialAttributes(base64Image) {
-    var myHeaders = new Headers();
+    let myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
-    var raw = JSON.stringify({ data: base64Image });
+    let raw = JSON.stringify({ data: base64Image });
 
-    var requestOptions = {
+    let requestOptions = {
         method: "POST",
         body: raw,
         redirect: "follow",
@@ -65,7 +65,7 @@ function detectFacialAttributes(base64Image) {
 
     fetch("/rekognize/face", requestOptions)
         .then((response) => response.json())
-        .then((result) => displayResults(result.FaceDetails[0], "face", false))
+        .then((result) => displayResults(result.FaceDetails?.[0] || null, "face", false))
         .catch((error) => displayResults(error, "face", true));
 }
 
@@ -81,7 +81,7 @@ function displayResults(data, column, error) {
         return;
     }
 
-    var resArr;
+    let resArr;
 
     if (column === "image") {
         resArr = data.map((row) => row.Name);
