@@ -14,21 +14,12 @@ function getImageData() {
 }
 
 function processImage(imageFile) {
-    let reader = new FileReader();
+    var reader = new FileReader();
     reader.onload = function () {
-        let dataURL = reader.result;
+        var dataURL = reader.result;
         const base64Image = dataURL.replace(
-            /^data:image\/(png|jpg|jpeg);base64,/,
-            ""
+            /^data:image\/(png|jpg|jpeg);base64,/, ""
         );
-
-        // Clear previous results
-        document.querySelector(
-            "#result #recognition-results #image"
-        ).innerHTML = ``;
-        document.querySelector(
-            "#result #recognition-results #face"
-        ).innerHTML = ``;
 
         detectImage(base64Image);
         detectFacialAttributes(base64Image);
@@ -41,12 +32,12 @@ function processImage(imageFile) {
 }
 
 function detectImage(base64Image) {
-    let myHeaders = new Headers();
+    var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
-    let raw = JSON.stringify({ data: base64Image });
+    var raw = JSON.stringify({ data: base64Image });
 
-    let requestOptions = {
+    var requestOptions = {
         method: "POST",
         body: raw,
         redirect: "follow",
@@ -54,23 +45,18 @@ function detectImage(base64Image) {
     };
 
     fetch("/rekognize/image", requestOptions)
-        .then((response) => {
-            if (!response.ok) {
-                throw new Error("Network response was not ok");
-            }
-            return response.json();
-        })
+        .then((response) => response.json())
         .then((result) => displayResults(result.Labels, "image", false))
-        .catch((error) => displayResults({ message: error.message }, "image", true));
+        .catch((error) => displayResults(error, "image", true));
 }
 
 function detectFacialAttributes(base64Image) {
-    let myHeaders = new Headers();
+    var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
-    let raw = JSON.stringify({ data: base64Image });
+    var raw = JSON.stringify({ data: base64Image });
 
-    let requestOptions = {
+    var requestOptions = {
         method: "POST",
         body: raw,
         redirect: "follow",
@@ -78,14 +64,9 @@ function detectFacialAttributes(base64Image) {
     };
 
     fetch("/rekognize/face", requestOptions)
-        .then((response) => {
-            if (!response.ok) {
-                throw new Error("Network response was not ok");
-            }
-            return response.json();
-        })
-        .then((result) => displayResults(result.FaceDetails?.[0], "face", false))
-        .catch((error) => displayResults({ message: error.message }, "face", true));
+        .then((response) => response.json())
+        .then((result) => displayResults(result.FaceDetails[0], "face", false))
+        .catch((error) => displayResults(error, "face", true));
 }
 
 function displayResults(data, column, error) {
@@ -95,59 +76,39 @@ function displayResults(data, column, error) {
     if (error) {
         const errorMessage = document.createElement("div");
         errorMessage.className = `alert alert-danger`;
-        errorMessage.textContent = data.message || "An error occurred.";
+        errorMessage.textContent = data.message;
         resultDiv.appendChild(errorMessage);
         return;
     }
 
-    let resArr = [];
+    var resArr;
 
-    if (column === "image" && Array.isArray(data)) {
+    if (column === "image") {
         resArr = data.map((row) => row.Name);
-        if (resArr.length === 0) {
-            resultDiv.textContent = "No deducible labels.";
+        if (!resArr || resArr.length === 0) {
+            resultDiv.textContent = "No deducible labels";
             return;
         }
     }
 
     if (column === "face") {
         if (!data) {
-            resultDiv.textContent = "No deducible facial features.";
+            resultDiv.textContent = "No deducible facial features";
             return;
         }
         resArr = [
-            data.AgeRange
-                ? `Age: ${data.AgeRange.Low}-${data.AgeRange.High}`
-                : "Age: Not Available",
-            data.Gender
-                ? `Gender: ${data.Gender.Value}`
-                : "Gender: Not Available",
-            data.Emotions && data.Emotions.length > 0
-                ? `Emotion: ${data.Emotions.reduce((acc, current) =>
-                    acc.Confidence < current.Confidence ? current : acc
-                )["Type"]}`
-                : "Emotion: Not Available",
-            `Smiling?: ${data.Smile?.Value || "Not Available"}`,
-            `Glasses?: ${
-                data.Eyeglasses?.Value || data.Sunglasses?.Value || "No"
-            }`,
+            `Age: ${data.AgeRange.Low}-${data.AgeRange.High}`,
+            `Gender: ${data.Gender.Value}`,
+            `Emotion: ${data.Emotions.reduce((accumulator, current) =>
+                accumulator.Confidence < current.Confidence ? current : accumulator)["Type"]}`,
+            `Smiling?: ${data.Smile.Value}`,
+            `Glasses?: ${data.Eyeglasses.Value || data.Sunglasses.Value}`,
         ];
     }
 
     resArr.forEach((res) => {
         const item = document.createElement("div");
-        item.classList.add(
-            "border",
-            "border-info",
-            "bg-info",
-            "bg-opacity-10",
-            "p-1",
-            "w-75",
-            "rounded",
-            "fs-4",
-            "m-auto",
-            "my-2"
-        );
+        item.classList.add("border", "border-info", "bg-info", "bg-opacity-10", "border-info", "p-1", "w-75", "rounded", "fs-4", "m-auto", "my-2");
         item.innerText = res;
         resultDiv.appendChild(item);
     });

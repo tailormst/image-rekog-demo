@@ -1,3 +1,4 @@
+
 <!doctype html>
 <html lang="en">
 
@@ -8,121 +9,58 @@
     <title>Rekog-Demo</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <style>
-        body {
-            background-color: #f4f7fc;
-            font-family: 'Arial', sans-serif;
-        }
-
-        /* Navbar Styling */
-        .navbar {
-            background-color: #1e3a8a;
-        }
-
-        .navbar-brand img {
-            max-width: 150px;
-        }
-
-        .me-2 {
-            color: white;
-            font-weight: bold;
-        }
-
-        /* File Upload Section */
-        .form-control {
-            border-radius: 10px;
-            border: 2px solid #1e3a8a;
-        }
-
-        .form-control:focus {
-            border-color: #2563eb;
-            box-shadow: 0px 0px 10px rgba(37, 99, 235, 0.5);
-        }
-
-        /* Image & Results Section */
-        .container {
-            max-width: 900px;
-        }
-
-        .card-custom {
-            border-radius: 12px;
-            background: white;
-            box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-            padding: 20px;
-        }
-
-        .img-preview {
-            max-height: 300px;
-            border-radius: 10px;
-            object-fit: cover;
-        }
-
-        /* Recognition Results */
-        .result-box {
-            background: #eef2ff;
-            border-radius: 10px;
-            padding: 15px;
-            font-weight: bold;
-            color: #1e3a8a;
-        }
-
-        .error-box {
-            background: #fecaca;
-            border-radius: 10px;
-            padding: 15px;
-            color: #b91c1c;
-            font-weight: bold;
-        }
-    </style>
 </head>
 
 <body>
-
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container-fluid">
-            <a class="navbar-brand" href="https://codemithra.com">
-                <img src="https://assets.ethnus.com/ethnus/2022/10/14035013/logo-codemithra-1.svg">
-            </a>
-            <div class="me-2">Image Recognition Demo</div>
+            <a class="navbar-brand" href="https://codemithra.com"><img class="w-50 ps-2"
+                    src="https://assets.ethnus.com/ethnus/2022/10/14035013/logo-codemithra-1.svg"></a>
+            <div class="me-2 text-sm">Image Recognition Demo</div>
         </div>
     </nav>
-
-    <!-- Upload Section -->
-    <div class="container mt-4">
-        <div class="card-custom">
-            <h4 class="text-center text-primary">Upload your image</h4>
-            <input class="form-control mt-3" type="file" name="image-upload" id="image-upload" accept="image/*" />
+    <div class="container">
+        <div class="mt-3">
+            <label for="image-upload" class="form-label">Upload your image here</label>
+            <input class="form-control" type="file" name="image-upload" id="image-upload" accept="image/*" />
         </div>
-    </div>
-
-    <!-- Results Section -->
-    <div id="result" class="container mt-4" style="display: none;">
-        <div class="row">
-            <div class="col-md-6 text-center">
-                <h5>Your Image</h5>
-                <div class="card-custom d-flex justify-content-center align-items-center" style="height: 350px;">
-                    <img class="img-preview img-fluid" id="uploaded-image">
+        <div id="result" class="mt-5" style="display: none">
+            <div class="container">
+                <div class="row">
+                    <div class="col-sm text-center">
+                        <h2>Your Image</h2>
+                    </div>
+                    <div class="col-sm text-center">
+                        <h2>Recognized Data</h2>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm shadow-lg p-3 d-flex justify-content-center align-items-center"
+                        style="height: 400px;">
+                        <img class="img-fluid" id="uploaded-image" style="max-height: 400px;">
+                    </div>
+                    <div class="col-sm text-center" id="recognition-results">
+                        <div class="row">
+                            <div class="col-sm" id="title-image">
+                                <h4>Image Attributes</h4>
+                            </div>
+                            <div class="col-sm" id="title-face">
+                                <h4>Facial Attributes</h4>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm" id="image"></div>
+                            <div class="col-sm" id="face"></div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <!-- Recognition Data -->
-            <div class="col-md-6">
-                <h5>Recognized Data</h5>
-                <div class="card-custom">
-                    <h6>Image Attributes</h6>
-                    <div id="image" class="result-box">Loading...</div>
-                    <h6 class="mt-3">Facial Attributes</h6>
-                    <div id="face" class="result-box">Loading...</div>
-                </div>
-            </div>
         </div>
     </div>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
         crossorigin="anonymous"></script>
     <script src="index.js" defer></script>
-
 </body>
 
 </html>
