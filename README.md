@@ -33,5 +33,5 @@ This project demonstrates the use of **AWS Rekognition** to analyze images for l
 ---
 
 ### For more details see document which i attached in AWS_Document
-
+### I also make this Project in Live AWS webinar
 ## This README should help others understand the project setup, architecture, and AWS configurations. If you need any other modifications, feel free to ask! 🚀
