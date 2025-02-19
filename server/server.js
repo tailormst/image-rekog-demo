@@ -4,7 +4,7 @@ const path = require("path");
 const { Rekognition } = require("@aws-sdk/client-rekognition");
 
 const rekognition = new Rekognition({
-    region: "ap-south-1",
+    region: "us-east-1",
 });
 
 app.use(express.json({ limit: "50mb" }));
